@@ -2,20 +2,29 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export interface AppProps {
-  // Define construct properties here
+export interface StandardSQSProps {
+  queueName: string;
 }
 
 export class StandardSQS extends Construct {
 
-  constructor(scope: Construct, id: string, props: AppProps = {}) {
+  constructor(scope: Construct, id: string, props: StandardSQSProps) {
     super(scope, id);
 
-    // Define construct contents here
-
-    // example resource
-    const queue = new sqs.Queue(this, 'AppQueue', {
-      visibilityTimeout: cdk.Duration.seconds(300)
+    // dead letter queue
+    const dlq = new sqs.Queue(this, props.queueName + '-dlq', {
+      queueName: props.queueName + '-dlq'
     });
+
+    // main queue
+    const mainQueue = new sqs.Queue(this, props.queueName, {
+      queueName: props.queueName,
+      visibilityTimeout: cdk.Duration.seconds(300),
+      deadLetterQueue: {
+        maxReceiveCount: 3,
+        queue: dlq
+      }
+    });
+
   }
 }
