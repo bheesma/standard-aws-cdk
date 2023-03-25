@@ -23,6 +23,7 @@ exports[`StandardSQS match snapshot 1`] = `
           },
           "maxReceiveCount": 3,
         },
+        "SqsManagedSseEnabled": true,
         "VisibilityTimeout": 300,
       },
       "Type": "AWS::SQS::Queue",
@@ -32,6 +33,7 @@ exports[`StandardSQS match snapshot 1`] = `
       "DeletionPolicy": "Delete",
       "Properties": {
         "QueueName": "MyQueue-dlq",
+        "SqsManagedSseEnabled": true,
       },
       "Type": "AWS::SQS::Queue",
       "UpdateReplacePolicy": "Delete",

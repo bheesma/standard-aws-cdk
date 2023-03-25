@@ -13,13 +13,15 @@ export class StandardSQS extends Construct {
 
     // dead letter queue
     const dlq = new sqs.Queue(this, props.queueName + '-dlq', {
-      queueName: props.queueName + '-dlq'
+      queueName: props.queueName + '-dlq',
+      encryption: sqs.QueueEncryption.SQS_MANAGED
     });
 
     // main queue
     const mainQueue = new sqs.Queue(this, props.queueName, {
       queueName: props.queueName,
       visibilityTimeout: cdk.Duration.seconds(300),
+      encryption: sqs.QueueEncryption.SQS_MANAGED,
       deadLetterQueue: {
         maxReceiveCount: 3,
         queue: dlq

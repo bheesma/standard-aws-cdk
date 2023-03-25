@@ -27,11 +27,13 @@ describe('StandardSQS', () => {
 
         // Assert it creates the function with the correct properties...
         template.hasResourceProperties("AWS::SQS::Queue", {
-            QueueName: "MyQueue-dlq"
+            QueueName: "MyQueue-dlq",
+            SqsManagedSseEnabled: true
         });
 
         template.hasResourceProperties("AWS::SQS::Queue", {
-            QueueName: "MyQueue"
+            QueueName: "MyQueue",
+            SqsManagedSseEnabled: true
         });
 
     });
@@ -47,6 +49,7 @@ describe('StandardSQS', () => {
 
         const template = Template.fromStack(stack);
 
+        // ASSERT
         expect(template.toJSON()).toMatchSnapshot();
 
     });
