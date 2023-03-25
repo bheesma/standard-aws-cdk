@@ -35,4 +35,19 @@ describe('StandardSQS', () => {
         });
 
     });
+
+    test('match snapshot', () => {
+        // GIVEN
+        const props: StandardSQSProps = {
+            queueName: 'MyQueue'
+        };
+
+        // WHEN
+        new StandardSQS(stack, 'MyQueue', props);
+
+        const template = Template.fromStack(stack);
+
+        expect(template.toJSON()).toMatchSnapshot();
+
+    });
 });
