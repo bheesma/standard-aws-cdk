@@ -25,17 +25,21 @@ describe('StandardSQS', () => {
 
         const template = Template.fromStack(stack);
 
-        // Assert it creates the function with the correct properties...
+        // ASSERT
+
+        //DLQ exists and encrypted
         template.hasResourceProperties("AWS::SQS::Queue", {
             QueueName: "MyQueue-dlq",
             SqsManagedSseEnabled: true
         });
 
+        //DLQ does not have another DLQ associated with it
         template.hasResourceProperties("AWS::SQS::Queue", {
             QueueName: "MyQueue-dlq",
             RedrivePolicy: Match.absent()
         });
 
+        //Main queue exists, encrypted and has dead letter queue associated
         template.hasResourceProperties("AWS::SQS::Queue", {
             QueueName: "MyQueue",
             SqsManagedSseEnabled: true,
