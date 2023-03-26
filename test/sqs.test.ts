@@ -33,7 +33,15 @@ describe('StandardSQS', () => {
 
         template.hasResourceProperties("AWS::SQS::Queue", {
             QueueName: "MyQueue",
-            SqsManagedSseEnabled: true
+            SqsManagedSseEnabled: true,
+            RedrivePolicy: {
+                "deadLetterTargetArn": {
+                  "Fn::GetAtt": [
+                    "MyQueueMyQueuedlqD7DA31C4",
+                    "Arn",
+                  ],
+                }
+            }
         });
 
     });
