@@ -1,6 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
 import { Stack } from 'aws-cdk-lib';
-import { Template } from 'aws-cdk-lib/assertions';
+import { Match, Template } from 'aws-cdk-lib/assertions';
 import * as App from '../lib/index';
 import { StandardSQS, StandardSQSProps } from '../lib/index';
 
@@ -29,6 +29,11 @@ describe('StandardSQS', () => {
         template.hasResourceProperties("AWS::SQS::Queue", {
             QueueName: "MyQueue-dlq",
             SqsManagedSseEnabled: true
+        });
+
+        template.hasResourceProperties("AWS::SQS::Queue", {
+            QueueName: "MyQueue-dlq",
+            RedrivePolicy: Match.absent()
         });
 
         template.hasResourceProperties("AWS::SQS::Queue", {
